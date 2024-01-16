@@ -99,7 +99,7 @@ const getIcons = (text: string) => {
     ></div>
 
     <main
-      class="fixed top-16 bottom-0 left-0 mx-auto max-w-screen duration-300 ease-in-out overflow-x-hidden overflow-y-auto lg:ml-[20rem]">
+      class="fixed top-16 bottom-0 inset-x-0 mx-auto max-w-screen duration-300 ease-in-out overflow-x-hidden overflow-y-auto lg:ml-[20rem]">
       <slot></slot>
     </main>
   </main>
