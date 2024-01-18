@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onUpdated, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths, startOfWeek, addWeeks, format } from 'date-fns';
 import PiIcon from '@/components/ui/PiIcon.vue';
 import PiCard from '@/components/ui/PiCard.vue';
