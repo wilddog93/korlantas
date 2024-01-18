@@ -1,22 +1,18 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { ref } from 'vue';
 import NavbarView from './NavbarView.vue';
 import PiIcon from './ui/PiIcon.vue';
 
 const sideBar = ref<boolean>(false)
 const navbarRef = ref<HTMLDivElement | null>(null)
 const sidebarRef = ref<HTMLDivElement | null>(null)
-const navbarHeight = computed(
-  () => navbarRef.value?.clientHeight || 0
-)
+// const navbarHeight = computed(
+//   () => navbarRef.value?.clientHeight || 0
+// )
 
-const sidebarWidth = computed(
-  () => sidebarRef.value?.clientWidth || 0
-)
-
-const calculatedHeight = computed(() => {
-  return window.innerHeight - navbarHeight.value
-})
+// const calculatedHeight = computed(() => {
+//   return window.innerHeight - navbarHeight.value
+// })
 
 const toggleBar = () => {
   sideBar.value = !sideBar.value
@@ -29,38 +25,13 @@ interface Menu {
 }
 
 const menus: Menu[] = [
-  { to: 'home', label: 'Dashboard', icon: "home" },
-  { to: 'rekap-lakalantas', label: 'Rekap Lakalantas' },
-  { to: 'pengumuman', label: 'Pengumuman' },
-  { to: 'pengaturan-form', label: 'Pengaturan Form' },
-  { to: 'laporan', label: 'Laporan' },
-  { to: 'data-petugas', label: 'Data Petugas' },
-  { to: 'example-buttons', label: 'Buttons' },
-  { to: 'example-icons', label: 'Icons' },
-  { to: 'example-modals', label: 'Modals' },
-  { to: 'example-checkbox', label: 'Checkbox' },
-  { to: 'example-pagination', label: 'Pagination' },
-  { to: 'example-input', label: 'Text Input' },
-  { to: 'example-select', label: 'Select' },
-  { to: 'example-card', label: 'Card' },
-  { to: 'example-table', label: 'Table' },
-  { to: 'example-chart', label: 'Chart' }
-]
-
-const searchInput = ref('');
-const onClear = () => {
-  searchInput.value = ""
-}
-
-console.log(calculatedHeight.value, 'calculatedHeight')
-
-const getIcons = (text: string) => {
-  if (!text) {
-    return null
-  }
-  const script = `<PiIcon type="${text}" />`;
-  return script;
-}
+  { to: 'home', label: 'Dashboard', icon: "layout" },
+  { to: 'rekap-lakalantas', label: 'Rekap Lakalantas', icon: "list" },
+  { to: 'pengumuman', label: 'Pengumuman', icon: "info" },
+  { to: 'pengaturan-form', label: 'Pengaturan Form', icon: "clipboard" },
+  { to: 'laporan', label: 'Laporan', icon: "book" },
+  { to: 'data-petugas', label: 'Data Petugas', icon: "folder" },
+];
 
 </script>
 
@@ -80,12 +51,14 @@ const getIcons = (text: string) => {
         </div>
         <nav>
           <ul>
-            <li v-for="menu in menus" :key="menu.to">
+            <li v-for="(menu, id) in menus" :key="id">
               <RouterLink :to="{ name: menu.to }"
-                class="text-gray-500 px-3 py-2 block hover:bg-primary-600 hover:text-gray-100 rounded-full">
-                <!-- <PiIcon :v-if="menu.icon" :type="(menu.icon as any)" /> -->
-                <!-- {{ getIcons(menu.icon as string) }} -->
-                {{ menu.label }}
+                class="text-gray-500 px-3 py-2 block duration-300 ease-in-out transform hover:bg-primary-500 hover:text-gray-100 rounded-full"
+                :class="[menus.length - 1 == id ? '' : 'mb-3']" exact-active-class="bg-primary-500 text-gray-100">
+                <div class="flex gap-1 items-center">
+                  <PiIcon :v-if="menu.icon" :type="(menu.icon as any)" class="text-inherit" />
+                  {{ menu.label }}
+                </div>
               </RouterLink>
             </li>
           </ul>
@@ -93,10 +66,8 @@ const getIcons = (text: string) => {
       </div>
     </aside>
 
-    <div @click="toggleBar" 
-    class="w-full inset-0 fixed z-20 bg-dark-900/20 sm:hidden"
-    :class="[sideBar ? 'translate-x-0' : '-translate-x-full']"
-    ></div>
+    <div @click="toggleBar" class="w-full inset-0 fixed z-20 bg-dark-900/20 sm:hidden"
+      :class="[sideBar ? 'translate-x-0' : '-translate-x-full']"></div>
 
     <main
       class="fixed top-16 bottom-0 inset-x-0 mx-auto max-w-screen duration-300 ease-in-out overflow-x-hidden overflow-y-auto lg:ml-[20rem] p-4">

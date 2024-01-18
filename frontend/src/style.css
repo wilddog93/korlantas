@@ -31,3 +31,7 @@ body {
     color-stop(0.6, #ced4da)
   );
 }
+
+.dp__menu_content_wrapper {
+  font-size: 14px;
+}

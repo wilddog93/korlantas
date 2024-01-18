@@ -1,79 +1,289 @@
 <script setup lang="ts">
+import { computed, onUpdated, ref, watch } from 'vue';
+import { endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths, startOfWeek, addWeeks, format } from 'date-fns';
+import PiIcon from '@/components/ui/PiIcon.vue';
+import PiCard from '@/components/ui/PiCard.vue';
+import { ChartProps, Doughnut, Bar, Line } from 'vue-chartjs';
+import { doughnutOptions1, barOptions4, lineChart1 } from "@/chart.options"
+import { main } from "@/data-lakalantas"
+import PiSelect, { type Option as SelectOption } from '@/components/ui/PiSelect.vue';
+
+const currentDate = new Date();
+const date = ref(currentDate);
+
+// Get the start of the current week
+const startOfCurrentWeek = startOfWeek(currentDate);
+const endOfCurrentWeek = startOfWeek(addWeeks(currentDate, 1));
+
+// Get the start of last week
+const startOfLastWeek = startOfWeek(addWeeks(currentDate, -1));
+const endOfLastWeek = startOfWeek(addWeeks(startOfLastWeek, 1));
+
+const presetDates = ref([
+  { label: 'Today', value: [currentDate, currentDate] },
+  // {
+  //   label: 'Today (Slot)',
+  //   value: [new Date(), new Date()],
+  //   slot: 'preset-date-range-button'
+  // },
+  { label: 'Last week', value: [startOfLastWeek, endOfLastWeek] },
+  { label: 'This week', value: [startOfCurrentWeek, endOfCurrentWeek] },
+  { label: 'This month', value: [startOfMonth(currentDate), endOfMonth(currentDate)] },
+  {
+    label: 'Last month',
+    value: [startOfMonth(subMonths(currentDate, 1)), endOfMonth(subMonths(currentDate, 1))],
+  },
+  { label: 'This year', value: [startOfYear(currentDate), endOfYear(currentDate)] },
+]);
+
+// chart-doughnut
+const values = computed(() => main.map((item) => item.totalKecelakaan));
+const labels = computed(() => main.map((item) => item.name));
+const colors = computed(() => main.map((item) => item.color));
+
+const dataDougnut: ChartProps<'doughnut'>['data'] = {
+  labels: labels.value,
+  datasets: [
+    {
+      backgroundColor: colors.value,
+      hoverOffset: 4,
+      data: values.value,
+    }
+  ],
+}
+
+// stacked-bar
+const randomNumber = (n = 12) => {
+  return [...Array(n)].map(_ => Math.floor(Math.random() * 100))
+}
+
+const mainStackBar = computed(() => {
+  let newArr: any[] = [];
+  main.length && main.map((data) => {
+    newArr.push({
+      name: data.name,
+      totalKecelakaan: data.totalKecelakaan,
+      totalLukaRingan: data.ringan.reduce((curr: any, item) => curr + item.total, 0),
+      totalLukaBerat: data.berat.reduce((curr: any, item) => curr + item.total, 0),
+      totalMeninggal: data.meninggal.reduce((curr: any, item) => curr + item.total, 0)
+    })
+  })
+  return newArr
+})
+
+const resultBar = computed<ChartProps<'bar'>["data"]>(() => ({
+  labels: mainStackBar.value.map((item) => item.name),
+  datasets: [
+    {
+      label: "Luka Ringan",
+      data: mainStackBar.value.map((item) => item.totalLukaRingan),
+      // data: randomNumber(mainStackBar.value.length),
+      backgroundColor: "#FDD835",
+      borderRadius: 5
+    },
+    {
+      label: "Luka Berat",
+      data: mainStackBar.value.map((item) => item.totalLukaBerat),
+      // data: randomNumber(mainStackBar.value.length),
+      backgroundColor: "#FF734C",
+      borderRadius: 5
+    },
+    {
+      label: "Meninggal",
+      data: mainStackBar.value.map((item) => item.totalMeninggal),
+      // data: randomNumber(mainStackBar.value.length),
+      backgroundColor: "#FF006B",
+      borderRadius: 5
+    }
+  ]
+}))
+
+// line-chart
+const filterDataByName = (data: any[], name: string) => {
+  return data.find((item) => item.name === name);
+}
+
+// Function to transform data for Chart.js
+const transformDataForChart = (data: any[], category: string, color?: string) => {
+  return data.map((item) => ({
+    label: item.name,
+    data: item[category].map((entry: any) => entry.total),
+    backgroundColor: item.color || color,
+  }));
+}
+
+// Create a function to update the chart
+const updateChart = (selectedName: string) => {
+  const filteredData = filterDataByName(main, selectedName);
+  console.log(filteredData, 'result')
+  let chartData: ChartProps<'line'>['data'] = {
+    labels: [],
+    datasets: []
+  }
+  if (filteredData) {
+    // const ringanData = transformDataForChart(main, 'ringan', "#FDD835");
+    // const beratData = transformDataForChart(main, 'berat', "#FF734C");
+    // const meninggalData = transformDataForChart(main, 'meninggal', "#FF006B");
+    // const ringanValues = filteredData.ringan.map((entry: any) => entry.total);
+    // const beratValues = filteredData.berat.map((entry: any) => entry.total);
+    // const meninggalValues = filteredData.meninggal.map((entry: any) => entry.total);
+
+    chartData = {
+      labels: filteredData.ringan.map((entry: any) => format(new Date(entry.datetime), "LLLL")),
+      datasets: [
+        {
+          label: 'Ringan',
+          data: randomNumber(filteredData.ringan.length),
+          borderColor: 'rgba(41, 204, 255, 1)',
+          backgroundColor: 'rgba(41, 204, 255, 0.2)',
+          // fill: true,
+        },
+        {
+          label: 'Berat',
+          // data: beratValues,
+          data: randomNumber(filteredData.berat.length),
+          borderColor: 'rgba(255, 115, 76, 1)',
+          backgroundColor: 'rgba(255, 115, 76, 0.2)',
+          // fill: true,
+        },
+        {
+          label: 'Meninggal',
+          // data: meninggalValues,
+          data: randomNumber(filteredData.meninggal.length),
+          borderColor: '#FF006B',
+          backgroundColor: '#FF006B',
+          // fill: true,
+        },
+      ],
+    };
+  }
+  return chartData
+}
+
+const areaOptions: SelectOption[] = main.map((item) => ({
+  label: item.name,
+  value: item.name
+}))
+const selectedArea = ref<any>(areaOptions[0].label);
+
+const chartUpdated = computed(() => updateChart(selectedArea.value));
+watch(chartUpdated, (value) => console.log(value, 'line-chart'))
+console.log(mainStackBar.value, 'selected', selectedArea.value)
+
 </script>
 
 <template>
-  <div class="w-full bg-gray-100 p-4">
-    <h3>Welcome to dashboard</h3>
+  <div class="w-full bg-gray-100 p-4 tracking-wide">
+    <div class="w-full flex flex-col lg:flex-row lg:justify-between lg:items-center mb-5">
+      <h3 class="font-semibold text-lg">Dashboard</h3>
+      <div>
+        <VueDatePicker v-model="date" range :preset-dates="presetDates">
+          <template #dp-input="{ value }">
+            <input type="text" :value="value"
+              class="w-full px-8 py-1.5 rounded-full border border-gray-300 focus:border-primary-500 text-xs">
+          </template>
+          <template #input-icon>
+            <PiIcon type="calendar" :size="16" class="ml-2" />
+          </template>
+          <template #preset-date-range-button="{ label, value, presetDate }">
+            <span role="button" :tabindex="0" @click="presetDate(value)" @keyup.enter.prevent="presetDate(value)"
+              @keyup.space.prevent="presetDate(value)">
+              {{ label }}
+            </span>
+          </template>
+        </VueDatePicker>
+      </div>
+    </div>
 
-    <div>
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur, delectus magnam ab obcaecati voluptatem
-      ipsa consequatur ratione! Voluptate odit harum beatae dolore sapiente ratione totam iure porro error dolorem.
-      Recusandae accusantium totam laudantium maiores reiciendis provident obcaecati nesciunt libero amet tempora quae,
-      deleniti aliquam odit aspernatur quibusdam nisi veritatis velit? Nostrum quibusdam facere adipisci corporis
-      explicabo expedita magnam asperiores fugiat pariatur dolorem voluptas sapiente dignissimos rerum quae odit
-      officiis, quam commodi fugit! Molestiae sit praesentium consectetur quas! Similique, cum, ut numquam quasi et
-      quibusdam in, asperiores eveniet sunt alias enim expedita nam ea illo necessitatibus velit distinctio. Ipsam nam
-      fugit, voluptate blanditiis sapiente autem ab possimus dolorum molestiae id sed debitis accusantium, vel eveniet
-      quis iste totam optio, ducimus incidunt dolore velit! Porro dignissimos, consequatur inventore, mollitia quaerat
-      dolores est eum eius quibusdam dolore tempora officiis atque, deleniti perferendis nisi amet fugit. Delectus fugit
-      quas ex nemo id excepturi placeat provident reprehenderit possimus perferendis, voluptatum officia quibusdam quia
-      voluptatibus sit vel facilis optio totam laboriosam dolores tenetur nisi labore impedit rerum. Dolore voluptatum
-      esse perspiciatis corporis numquam, aspernatur ipsum voluptas harum officia, omnis iure, placeat maiores eos enim
-      ad incidunt? Tempore, aliquid dicta perspiciatis ipsum quaerat nihil quasi quos sunt porro libero provident non
-      vitae molestias rem inventore itaque ad error nostrum mollitia odio ab laborum debitis animi. Obcaecati, velit
-      autem reprehenderit expedita labore dolorum dicta corporis ducimus ipsam architecto, id, praesentium facilis
-      tenetur adipisci impedit. Quidem voluptates excepturi doloribus voluptatum ex magnam beatae voluptas aperiam
-      temporibus alias eaque eos, similique suscipit, cupiditate, cum ad? Quas, natus quaerat! Quaerat quos sequi
-      perferendis hic? Facilis numquam tempore maxime eligendi atque aliquid. Nemo necessitatibus vero at. Natus
-      voluptatem deserunt facilis aliquam blanditiis ex corrupti. Quisquam ea vero quaerat rerum, iste necessitatibus
-      numquam sapiente, reprehenderit sit ratione quos ipsum voluptatum ullam impedit quidem velit corporis dolore
-      voluptas eligendi explicabo similique magnam. Veniam, tenetur aliquid. Culpa perspiciatis minus quidem. Molestias
-      perferendis enim voluptatem iste voluptatum dolore dicta eaque nobis eos numquam sapiente voluptate officiis a,
-      fuga molestiae voluptas excepturi unde. Nobis hic fuga asperiores rem ullam! Nobis quos magnam sint unde iure.
-      Molestiae nemo velit voluptas quia fuga cupiditate aspernatur aliquid autem tenetur, aperiam rem repellendus vero.
-      Porro, quam saepe a culpa tempora ipsum nam ab atque neque deleniti aut ipsa quisquam minus, veritatis quae
-      aliquam est obcaecati. Autem sit eos neque eum suscipit! Labore nostrum suscipit iusto asperiores minima! Ipsam
-      quia praesentium, vitae distinctio corporis delectus. Perferendis minima deserunt quia ratione ad qui mollitia
-      necessitatibus sapiente. Delectus obcaecati fugit, atque natus maxime iusto eius! Quam cupiditate veritatis beatae
-      eveniet incidunt consequatur, porro rerum obcaecati optio enim consectetur commodi nostrum reiciendis nihil dolore
-      soluta sed vel! Distinctio, quos? Facilis eveniet totam laboriosam est sapiente molestias rerum deleniti
-      aspernatur quas omnis repudiandae harum, explicabo nemo impedit distinctio suscipit earum fuga perferendis
-      reprehenderit? Libero ipsam nostrum ea laudantium consequuntur sint dolore, ipsum fuga minus in minima inventore.
-      Culpa, at corrupti ullam a omnis fugiat. Nesciunt necessitatibus debitis, maxime cumque inventore eveniet. Nobis
-      voluptatem iste ipsam fugit vero fuga similique nulla, corporis quod quidem id in deleniti quibusdam veniam
-      obcaecati neque hic asperiores minus sunt impedit, odio nam esse ullam! Nam cum reiciendis dignissimos dolores!
-      Nam quia tempore libero magnam deleniti magni saepe, nesciunt facilis unde excepturi, et, aspernatur pariatur
-      voluptatem odio perferendis? Placeat officia, quasi dolorum reprehenderit velit accusamus nemo cupiditate illum
-      consequuntur maxime, laudantium tempora nisi neque pariatur adipisci itaque dicta eum. Molestias blanditiis,
-      dolorem accusamus, hic nostrum quod laudantium facilis corrupti nemo vitae sit rem asperiores quo ad at aut. Odio
-      nulla commodi sint ipsum. Corrupti pariatur laborum quas quos praesentium fugiat laboriosam, nihil quibusdam sint
-      mollitia reiciendis alias omnis non distinctio et exercitationem voluptatibus laudantium quaerat, soluta, maiores
-      at error tempore inventore! Atque excepturi unde, veniam odio provident repellat aspernatur rem placeat doloremque
-      non sequi incidunt. Veritatis fugiat sunt quas excepturi vitae. Ab, in! Ex soluta, sunt perspiciatis tempore alias
-      sequi neque numquam? Vel, doloremque eius. Cumque, molestias repellat optio ipsa numquam, nesciunt minima incidunt
-      tenetur commodi, quo beatae quaerat dolor praesentium quidem deleniti maiores? Dolores numquam minus asperiores,
-      maiores consectetur laudantium tempore, ratione nesciunt beatae qui cupiditate sit similique, dignissimos soluta
-      odit debitis itaque sed aut blanditiis autem. Nisi numquam expedita laboriosam aliquid odio soluta id sequi
-      corrupti molestiae quo ea distinctio architecto, doloribus tenetur fuga pariatur possimus vel incidunt esse
-      tempore nulla repudiandae. Officiis distinctio, ad, corrupti cumque ab doloribus aliquam repudiandae, laboriosam
-      error eaque minima quasi illo eligendi numquam id ratione. A cupiditate alias, eius facere ipsam, eligendi
-      possimus consectetur iusto sit quis ex. Facilis et velit at, debitis eos mollitia sunt eum soluta autem laudantium
-      nihil incidunt sint excepturi, ratione quod, sed ipsa odit. Fuga sit deleniti iste architecto aperiam accusamus
-      alias et maiores veniam pariatur, facilis ad corrupti dolores! At, voluptas veritatis modi qui, alias, nihil
-      recusandae ipsam fuga dolorem quam dignissimos? Reprehenderit cupiditate id similique! Saepe ipsam quos tenetur
-      eveniet quasi. Asperiores fuga at consectetur tempora facilis ea eum id tempore dicta dolor quasi, dolore
-      quibusdam deleniti, numquam aliquam porro qui necessitatibus laboriosam similique non unde odio! Deserunt vero
-      repellat aut consectetur amet nostrum, esse sapiente reprehenderit quia dolor explicabo voluptate. Voluptate
-      voluptas quidem eaque, numquam, placeat porro assumenda facilis mollitia quisquam ipsa voluptates quibusdam
-      voluptatibus. Quis ab perferendis ad porro fugiat libero, velit obcaecati, eius eos amet maxime corrupti adipisci
-      distinctio eveniet in quaerat voluptas architecto facilis nisi voluptatum, laudantium debitis dolor ipsum! Officia
-      non molestiae, porro unde hic veritatis maiores quisquam consectetur nobis maxime voluptate ex cumque sint fugiat
-      modi dolore ratione nihil, voluptatibus aut, repellendus similique quam ipsam veniam. Ea, delectus similique
-      aliquid recusandae, vitae, quo veritatis non natus corrupti ipsum itaque placeat. At quas ratione recusandae,
-      fugit accusantium, quaerat, et sit perspiciatis amet vel asperiores eos distinctio. Molestiae voluptatem quidem
-      error a quam eaque alias, fugit modi nemo animi? Ipsa corrupti sunt, fuga quasi libero laborum quisquam
-      perspiciatis iure vel maxime rem nulla aliquam nihil harum quia, tenetur maiores repudiandae facere deleniti animi
-      nostrum amet? Alias sapiente totam debitis atque ipsam, aut doloribus?
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 text-sm">
+      <PiCard class="bg-white p-4 lg:col-span-2">
+        <div class="w-full">
+          <h3 class="text-lg">Data Kecelakaan</h3>
+
+          <div class="w-full flex flex-col lg:flex-row">
+            <div class="w-full lg:w-2/3 m-auto">
+              <div class="w-full h-[325px]">
+                <Doughnut :data="dataDougnut" :options="doughnutOptions1" title="Data Kecelakaan" />
+              </div>
+            </div>
+
+            <div class="w-full lg:w-1/3">
+              <div class="grid grid-cols-2 gap-2">
+                <PiCard v-for="(item, index) in main" :key="index" class="bg-gray-200 p-4 overflow-hidden"
+                  :class="[index == main.length - 1 ? ' col-end-3' : '']">
+                  <div class="flex gap-1 font-bold text-xs items-center">
+                    <div>
+                      <div :style="{ backgroundColor: item.color }" class="h-2 w-2 rounded-full" />
+                    </div>
+                    <h3>{{ item.name }}</h3>
+                  </div>
+                  <p class="font-bold text-2xl lg:text-3xl">{{ item.totalKecelakaan }}</p>
+                </PiCard>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full mt-10">
+          <div class="w-full flex flex-col lg:flex-row lg:items-center gap-2">
+            <h3 class="text-lg">Statistik</h3>
+            <div class="w-full max-w-[13rem] lg:ml-auto flex gap-2 items-center">
+              <span>Filter:</span>
+              <div class="w-full max-w-[10rem]">
+                <PiSelect btn-class="rounded-full py-2 focus:border focus:border-primary-500" v-model="selectedArea"
+                  :options="areaOptions" :selected-text="selectedArea"></PiSelect>
+              </div>
+            </div>
+          </div>
+          <div class="w-full h-[325px]">
+            <Line :data="updateChart(selectedArea)" :options="lineChart1" title="Kerugian Materil" />
+          </div>
+        </div>
+      </PiCard>
+
+      <div class="w-full">
+        <PiCard class="bg-white p-4">
+          <h1 class="text-lg text-gray-500 mb-5 font-medium">Data Korban Kecelakaan</h1>
+
+          <div class="grid grid-cols-3 gap-2">
+            <PiCard class="p-4">
+              <div class="flex gap-1 font-bold text-xs items-center">
+                <div>
+                  <div style="background-color: #FDD835;" class="h-2 w-2 rounded-full"></div>
+                </div>
+                <h3>Ringan</h3>
+              </div>
+              <p class="font-bold text-2xl lg:text-3xl">{{ mainStackBar.reduce((curr: any, val) => curr +
+                val.totalLukaRingan, 0) }}</p>
+            </PiCard>
+
+            <PiCard class="p-4">
+              <div class="flex gap-1 font-bold text-xs items-center">
+                <div>
+                  <div style="background-color: #FF734C;" class="h-2 w-2 rounded-full"></div>
+                </div>
+                <h3>Berat</h3>
+              </div>
+              <p class="font-bold text-2xl lg:text-3xl">{{ mainStackBar.reduce((curr: any, val) => curr +
+                val.totalLukaBerat, 0) }}</p>
+            </PiCard>
+
+            <PiCard class="p-4">
+              <div class="flex gap-1 font-bold text-xs items-center">
+                <div>
+                  <div style="background-color: #FF006B;" class="h-2 w-2 rounded-full"></div>
+                </div>
+                <h3>Meninggal</h3>
+              </div>
+              <p class="font-bold text-2xl lg:text-3xl">{{ mainStackBar.reduce((curr: any, val) => curr +
+                              val.totalMeninggal, 0) }}</p>
+            </PiCard>
+        </div>
+
+        <div class="w-full h-[325px]">
+          <Bar :data="resultBar" :options="barOptions4" title="Data Korban Kecelakaan" />
+        </div>
+      </PiCard>
     </div>
   </div>
-</template>
+</div></template>

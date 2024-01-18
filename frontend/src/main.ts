@@ -19,6 +19,9 @@ import {
 
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+
 const app = createApp(App);
 
 ChartJS.register(
@@ -37,5 +40,6 @@ ChartJS.register(
 
 app.use(router);
 app.use(createPinia());
+app.component('VueDatePicker', VueDatePicker);
 
 app.mount('#app');
