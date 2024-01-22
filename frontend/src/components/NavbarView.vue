@@ -37,7 +37,7 @@ defineEmits([
 
 <template>
     <Disclosure as="nav" class="bg-white fixed top-0 z-20 inset-x-0">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="mx-auto w-full max-w-screen-xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between z-20">
                 <div class="absolute inset-y-0 left-0 flex items-center">
                     <!-- Mobile menu button-->

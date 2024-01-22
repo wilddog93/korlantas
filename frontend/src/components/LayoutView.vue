@@ -51,12 +51,12 @@ const lessMore = () => {
   diplayAnnounces.value = announces.slice(0, 3);
 }
 
-watch(diplayAnnounces, (val, old) => console.log({val: val.length, old: old.length}, 'cek-value'))
+// watch(() => lessMore())
 
 </script>
 
 <template>
-  <main class="relative h-screen overflow-auto">
+  <main class="relative overflow-auto">
     <NavbarView ref="navbarRef" :side-bar="sideBar" @toggle-sidebar="toggleBar" />
 
     <aside ref="sidebarRef"
