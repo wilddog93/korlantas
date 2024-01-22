@@ -53,7 +53,7 @@ defineEmits([
                 </div>
 
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                    <div class="w-full lg:max-w-[13rem] flex flex-shrink-0 justify-center lg:justify-around items-center">
+                    <div class="w-full lg:max-w-[20rem] flex flex-shrink-0 justify-center gap-6 items-center">
                         <img class="h-10 w-auto" :src="Logo1" alt="Your Company" />
                         <img class="h-10 w-auto" :src="Logo2" alt="Your Company" />
                     </div>
