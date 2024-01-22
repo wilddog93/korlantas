@@ -4,7 +4,6 @@ import NavbarView from '@/components/NavbarView.vue';
 import PiIcon from '@/components/ui/PiIcon.vue';
 import { announces } from '@/data-lakalantas'
 import { format } from 'date-fns';
-import { watch } from 'vue';
 
 const sideBar = ref<boolean>(true)
 const navbarRef = ref<HTMLDivElement | null>(null)
