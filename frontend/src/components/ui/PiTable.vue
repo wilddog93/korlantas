@@ -128,6 +128,7 @@ const computedColumns = computed(() => {
         <PiInput prefix-icon="search" class="w-full" clearable :placeholder="searchPlaceholder" v-model="search"
           @clear="$emit('clear-search')" />
       </div>
+      <slot name="header"></slot>
       <!-- <div class="w-1/3 ml-auto flex justify-end">
         <PiDropdown v-model="openDropdownColumn" position="right">
           <PiButton>
