@@ -6,7 +6,7 @@ import { announces } from '@/data-lakalantas'
 import { format } from 'date-fns';
 import { watch } from 'vue';
 
-const sideBar = ref<boolean>(false)
+const sideBar = ref<boolean>(true)
 const navbarRef = ref<HTMLDivElement | null>(null)
 const sidebarRef = ref<HTMLDivElement | null>(null)
 // const navbarHeight = computed(
@@ -60,7 +60,7 @@ const lessMore = () => {
     <NavbarView ref="navbarRef" :side-bar="sideBar" @toggle-sidebar="toggleBar" />
 
     <aside ref="sidebarRef"
-      class="absolute lg:static z-30 top-0 mt-0 lg:mt-16 h-full w-full max-w-xs p-4 inset-y-0 left-0 flex flex-col overflow-y-auto bg-gray-100 transform duration-300 ease-in-out  border-0 lg:border-r-2 border-gray-400 lg:translate-x-0"
+      class="fixed lg:static z-30 mt-0 left-0 lg:mt-16 h-full w-full max-w-xs p-4 flex flex-col overflow-y-auto bg-gray-100 transform duration-300 ease-in-out border-0 lg:border-r-2 border-gray-400 lg:translate-x-0"
       :class="[sideBar ? '' : '-translate-x-full']">
       <div class="w-full flex flex-col gap-3">
         <div class="w-full flex gap-1 items-start">

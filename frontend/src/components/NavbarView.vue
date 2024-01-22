@@ -37,7 +37,7 @@ defineEmits([
 
 <template>
     <Disclosure as="nav" class="bg-white fixed top-0 z-20 inset-x-0">
-        <div class="mx-auto w-full max-w-screen-xl px-2 sm:px-6 lg:px-8">
+        <div class="mx-auto w-full px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between z-20">
                 <div class="absolute inset-y-0 left-0 flex items-center">
                     <!-- Mobile menu button-->
@@ -59,7 +59,7 @@ defineEmits([
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
-                            <PiInput v-model="searchInput" prefix-icon="search" clearable @clear="onClear" />
+                            <PiInput v-model="searchInput" prefix-icon="search" clearable @clear="onClear" placeholder="Search..." />
                         </div>
                     </div>
                 </div>
