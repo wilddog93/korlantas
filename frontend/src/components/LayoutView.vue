@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import NavbarView from './NavbarView.vue';
-import PiIcon from './ui/PiIcon.vue';
+import { computed, ref } from 'vue';
+import NavbarView from '@/components/NavbarView.vue';
+import PiIcon from '@/components/ui/PiIcon.vue';
+import { announces } from '@/data-lakalantas'
+import { format } from 'date-fns';
+import { watch } from 'vue';
 
 const sideBar = ref<boolean>(false)
 const navbarRef = ref<HTMLDivElement | null>(null)
@@ -33,6 +36,23 @@ const menus: Menu[] = [
   { to: 'data-petugas', label: 'Data Petugas', icon: "folder" },
 ];
 
+const diplayAnnounces = ref<any[]>(announces.slice(0, 3))
+const loadMoreCount = ref<number>(3);
+const showLoadMore = computed(() => {
+  return diplayAnnounces.value.length < announces.length;
+})
+const loadMore = () => {
+  const endIndex = diplayAnnounces.value.length + loadMoreCount.value;
+  diplayAnnounces.value = announces.slice(0, endIndex);
+}
+
+const lessMore = () => {
+  // const endIndex = diplayAnnounces.value.length - loadMoreCount.value;
+  diplayAnnounces.value = announces.slice(0, 3);
+}
+
+watch(diplayAnnounces, (val, old) => console.log({val: val.length, old: old.length}, 'cek-value'))
+
 </script>
 
 <template>
@@ -54,7 +74,7 @@ const menus: Menu[] = [
             <li v-for="(menu, id) in menus" :key="id">
               <RouterLink :to="{ name: menu.to }"
                 class="text-gray-500 px-3 py-2 block duration-300 ease-in-out transform hover:bg-primary-500 hover:text-gray-100 rounded-full"
-                :class="[menus.length - 1 == id ? '' : 'mb-3']" exact-active-class="bg-primary-500 text-gray-100">
+                :class="[menus.length - 1 == id ? '' : 'mb-3']" active-class="bg-primary-500 text-gray-100">
                 <div class="flex gap-1 items-center">
                   <PiIcon :v-if="menu.icon" :type="(menu.icon as any)" class="text-inherit" />
                   {{ menu.label }}
@@ -63,6 +83,20 @@ const menus: Menu[] = [
             </li>
           </ul>
         </nav>
+
+        <!-- announces -->
+        <PiCard class="bg-white p-4 rounded-xl text-sm">
+          <h1 class="text-gray-500 text-md mb-3">Pengumuman Terbaru</h1>
+          <ul class="">
+            <li v-for="(announce, index) in diplayAnnounces" :key="index" class="border-b border-gray-300 p-2"
+              :class="[announces.length - 1 == index ? '' : 'mb-3']">
+              <p class="font-semibold">{{ announce.description }}</p>
+              <p v-if="announce.datetime">{{ format(new Date(announce.datetime), "dd MMM yyyy hh:mm") }}</p>
+            </li>
+            <button @click="loadMore" v-if="showLoadMore">Tampilkan..</button>  
+            <button @click="lessMore" v-else>Sembunyikan..</button>  
+          </ul>
+        </PiCard>
       </div>
     </aside>
 

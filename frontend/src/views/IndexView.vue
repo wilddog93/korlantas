@@ -167,8 +167,8 @@ const areaOptions: SelectOption[] = main.map((item) => ({
 const selectedArea = ref<any>(areaOptions[0].label);
 
 const chartUpdated = computed(() => updateChart(selectedArea.value));
-watch(chartUpdated, (value) => console.log(value, 'line-chart'))
-console.log(mainStackBar.value, 'selected', selectedArea.value)
+// watch(chartUpdated, (value) => console.log(value, 'line-chart'))
+// console.log(mainStackBar.value, 'selected', selectedArea.value)
 
 </script>
 
@@ -202,7 +202,11 @@ console.log(mainStackBar.value, 'selected', selectedArea.value)
 
           <div class="w-full flex flex-col lg:flex-row">
             <div class="w-full lg:w-2/3 m-auto">
-              <div class="w-full h-[325px]">
+              <div class="relative w-full h-[325px]">
+                <div class="absolute z-10 inset-y-[40%] w-full text-center">
+                  <h1 class="uppercase">Total Laka</h1>
+                  <p class="text-3xl font-bold">{{ values.reduce((curr: any, val) => curr + val, 0) }}</p>
+                </div>
                 <Doughnut :data="dataDougnut" :options="doughnutOptions1" title="Data Kecelakaan" />
               </div>
             </div>
@@ -241,7 +245,7 @@ console.log(mainStackBar.value, 'selected', selectedArea.value)
         </div>
       </PiCard>
 
-      <div class="w-full">
+      <div class="w-full flex flex-col gap-3">
         <PiCard class="bg-white p-4">
           <h1 class="text-lg text-gray-500 mb-5 font-medium">Data Korban Kecelakaan</h1>
 
@@ -276,14 +280,37 @@ console.log(mainStackBar.value, 'selected', selectedArea.value)
                 <h3>Meninggal</h3>
               </div>
               <p class="font-bold text-2xl lg:text-3xl">{{ mainStackBar.reduce((curr: any, val) => curr +
-                              val.totalMeninggal, 0) }}</p>
+                val.totalMeninggal, 0) }}</p>
             </PiCard>
-        </div>
+          </div>
 
-        <div class="w-full h-[325px]">
-          <Bar :data="resultBar" :options="barOptions4" title="Data Korban Kecelakaan" />
-        </div>
-      </PiCard>
+          <div class="w-full h-[325px]">
+            <Bar :data="resultBar" :options="barOptions4" title="Data Korban Kecelakaan" />
+          </div>
+        </PiCard>
+
+        <PiCard class="text-white bg-slate-950 p-6">
+          <div class="flex items-center space-x-3">
+            <div class="h-12 w-12 flex items-center justify-center bg-slate-700 rounded-full">
+              <PiIcon type="corner-right-up"></PiIcon>
+            </div>
+            <h3 class="font-extralight">Top Alasan Kecelakaan</h3>
+          </div>
+          <div class="flex items-center space-x-6 mt-5 border-b border-slate-800 pb-6 mb-6">
+            <div>
+              <span class="text-4xl font-medium">17</span>
+              <span>%</span>
+            </div>
+            <div>
+              <div class="font-medium">Kurang Konsentrasi</div>
+              <div class="text-sm font-extralight">Mengantuk/Lelah</div>
+            </div>
+          </div>
+          <div class="flex items-center justify-center">
+            <a href="#" class="font-medium">Lihat Semua</a>
+          </div>
+        </PiCard>
+      </div>
     </div>
   </div>
-</div></template>
+</template>

@@ -750,3 +750,31 @@ export const main = [
     ],
   },
 ];
+
+export const announces = [
+  {
+    id: 1,
+    description: "Perhatian pengguna jalan tol, cuaca buruk diperkirakan dalam beberapa bulan",
+    datetime: "2024-01-17T15:03:52.270Z",
+  },
+  {
+    id: 2,
+    description: "Informasi penting. Besok akan dila-kukan pemeliharaan jalan di KM 40",
+    datetime: "2024-02-17T15:03:52.270Z",
+  },
+  {
+    id: 3,
+    description: "Lorem ipseum",
+    datetime: "2024-03-17T15:03:52.270Z",
+  },
+  {
+    id: 4,
+    description: "Penting! Jalur reguler di KM 31 ditutup untuk sementara waktu.",
+    datetime: "2024-04-17T15:03:52.270Z",
+  },
+  {
+    id: 5,
+    description: "Lorem ipseum",
+    datetime: "2024-05-17T15:03:52.270Z",
+  }
+]
