@@ -9,7 +9,7 @@ import { main } from "@/data-lakalantas"
 import PiSelect, { type Option as SelectOption } from '@/components/ui/PiSelect.vue';
 
 const currentDate = new Date();
-const date = ref(currentDate);
+const date = ref([currentDate, currentDate]);
 
 // Get the start of the current week
 const startOfCurrentWeek = startOfWeek(currentDate);
@@ -180,7 +180,7 @@ const chartUpdated = computed(() => updateChart(selectedArea.value));
         <VueDatePicker v-model="date" range :preset-dates="presetDates">
           <template #dp-input="{ value }">
             <input type="text" :value="value"
-              class="w-full px-8 py-1.5 rounded-full border border-gray-300 focus:border-primary-500 text-xs">
+              class="w-full px-8 py-2 rounded-full border border-gray-300 focus:border-primary-500 text-xs">
           </template>
           <template #input-icon>
             <PiIcon type="calendar" :size="16" class="ml-2" />
