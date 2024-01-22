@@ -74,7 +74,7 @@ watch(diplayAnnounces, (val, old) => console.log({val: val.length, old: old.leng
             <li v-for="(menu, id) in menus" :key="id">
               <RouterLink :to="{ name: menu.to }"
                 class="text-gray-500 px-3 py-2 block duration-300 ease-in-out transform hover:bg-primary-500 hover:text-gray-100 rounded-full"
-                :class="[menus.length - 1 == id ? '' : 'mb-3']" active-class="bg-primary-500 text-gray-100">
+                :class="[menus.length - 1 == id ? '' : 'mb-3']" exact-active-class="bg-primary-500 text-gray-100">
                 <div class="flex gap-1 items-center">
                   <PiIcon :v-if="menu.icon" :type="(menu.icon as any)" class="text-inherit" />
                   {{ menu.label }}
@@ -109,3 +109,10 @@ watch(diplayAnnounces, (val, old) => console.log({val: val.length, old: old.leng
     </main>
   </main>
 </template>
+
+<style>
+.router-link-active {
+  color: #FFFFFF;
+  font-weight: bold;
+}
+</style>
