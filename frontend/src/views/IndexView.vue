@@ -180,7 +180,7 @@ const chartUpdated = computed(() => updateChart(selectedArea.value));
         <VueDatePicker v-model="date" range :preset-dates="presetDates">
           <template #dp-input="{ value }">
             <input type="text" :value="value"
-              class="w-full px-8 py-2 rounded-full border border-gray-300 focus:border-primary-500 text-xs">
+              class="w-full px-8 py-2 rounded-full border border-gray-300 focus:border-primary-500 text-sm">
           </template>
           <template #input-icon>
             <PiIcon type="calendar" :size="16" class="ml-2" />

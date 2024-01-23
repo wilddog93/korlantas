@@ -5,8 +5,6 @@ import { vElementSize } from '@vueuse/components'
 import PiInput from './PiInput.vue'
 import PiPagination from './PiPagination.vue'
 import PiCheckbox from './PiCheckbox.vue'
-import PiIcon from './PiIcon.vue'
-import PiButton from './PiButton.vue'
 
 export interface TableColumn {
   label: string
@@ -36,7 +34,8 @@ export interface TableProps {
   showColumns?: string[]
   extraHeight?: number,
   emptyText?: string,
-  selectAll?: boolean
+  selectAll?: boolean,
+  isWrapping?: boolean,
 }
 
 defineOptions({
@@ -121,39 +120,24 @@ const computedColumns = computed(() => {
 </script>
 
 <template>
-  <div ref="tableParent" class="border rounded-2xl border-gray-500/20 relative">
-    <div ref="header" class="flex items-center py-4 px-4 border-gray-500/20 border-b">
-      <div class="w-1/3">
-        <PiInput prefix-icon="search" class="w-full" clearable :placeholder="searchPlaceholder" v-model="search"
-          @clear="$emit('clear-search')" />
+  <div ref="tableParent" class="rounded-2xl relative" :class="[isWrapping ? 'border border-gray-500/20' : '']">
+    <div ref="header" class="w-full flex flex-col">
+      <div class="flex flex-col lg:flex-row gap-2 lg:items-center py-4" :class="[isWrapping ? 'border-b border-gray-500/20 px-4' : '']">
+        <div class="w-full lg:w-1/3">
+          <PiInput prefix-icon="search" class="w-full" clearable :placeholder="searchPlaceholder" v-model="search"
+            @clear="$emit('clear-search')" />
+        </div>
+
+        <div v-if="$slots.header" class="w-full lg:w-2/3">
+          <slot name="header"></slot>
+        </div>
       </div>
-      <slot></slot>
-      <!-- <slot name="header"></slot> -->
-      <!-- <div class="w-1/3 ml-auto flex justify-end">
-        <PiDropdown v-model="openDropdownColumn" position="right">
-          <PiButton>
-            <div class="flex space-x-1 justify-end items-center text-gray-500">
-              <PiIcon type="columns" size="18"></PiIcon>
-              <span class="font-light underline">Column</span>
-            </div>
-          </PiButton>
-          <template v-slot:item>
-            <ul>
-              <template v-for="(col, index) in columns">
-                <li :key="index" v-if="!col.isKey" :class="index < columns.length - 1 ? 'mb-3' : ''">
-                  <PiCheckbox
-                    v-model="showColumns"
-                    :id="`${col.key}-select`"
-                    :value="col.key"
-                    :label="col.label"
-                  />
-                </li>
-              </template>
-            </ul>
-          </template>
-        </PiDropdown>
-      </div> -->
+
+      <div v-if="$slots.subHeader" class="w-full">
+        <slot name="subHeader"></slot>
+      </div>
     </div>
+
     <div class="relative overflow-x-auto">
       <div class="w-full">
         <div :style="{ width: tableWidth + 'px' }" class="sticky top-0 z-20">
@@ -164,8 +148,9 @@ const computedColumns = computed(() => {
                 <th v-if="selectalbe" scope="col" aria-controls="col-0" class="px-6 py-3 w-10">
                   <PiCheckbox v-model="selectAll"></PiCheckbox>
                 </th>
-                <th v-for="(column, columnKey) in computedColumns" :key="columnKey" :aria-controls="`col-${columnKey + 1}`"
-                  :style="{ width: `${width[columnKey + 1]}px` }" class="px-6 py-3 text-left" scope="col">
+                <th v-for="(column, columnKey) in computedColumns" :key="columnKey"
+                  :aria-controls="`col-${columnKey + 1}`" :style="{ width: `${width[columnKey + 1]}px` }"
+                  class="px-6 py-3 text-left" scope="col">
                   <span class="text-gray-500">{{ column.label }}</span>
                 </th>
               </tr>
@@ -227,7 +212,7 @@ const computedColumns = computed(() => {
     </div>
 
     <!-- Table footer -->
-    <div ref="footer" class="grid grid-cols-3 gap-5 py-3 items-center px-6 border-t border-gray-500/20">
+    <div ref="footer" class="grid grid-cols-3 gap-5 py-3 items-center px-6" :class="[isWrapping ? 'border-t border-gray-500/20' : '']">
       <div v-if="pagination" class="flex items-center space-x-3">
         <span>Row per page:</span>
         <div class="flex items-center space-x-2">

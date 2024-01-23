@@ -899,3 +899,124 @@ export const dataTables = {
     },
   ],
 };
+
+export const dataPetugas = {
+  total: 10,
+  page: 1,
+  limit: 10,
+  data: [
+    {
+      id: 1,
+      kode_petugas: "GTX001",
+      nama_panggilan: "BRIPKA Indra",
+      nama_lengkap: "Indra Muhaimin",
+      lokasi: "Jagorawi",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 2,
+      kode_petugas: "GTX002",
+      nama_panggilan: "BRIPKA Jegel",
+      nama_lengkap: "Indra Jegel",
+      lokasi: "Bitung",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 3,
+      kode_petugas: "GTX003",
+      nama_panggilan: "BRIPTU Surya",
+      nama_lengkap: "Surya Paloh",
+      lokasi: "Serang",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 4,
+      kode_petugas: "GTX004",
+      nama_panggilan: "BRIPTU Andi",
+      nama_lengkap: "Andi Muamar",
+      lokasi: "Borr",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 5,
+      kode_petugas: "GTX005",
+      nama_panggilan: "BRIPTU Dewantara",
+      nama_lengkap: "Agus Dewantara",
+      lokasi: "Serang",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 6,
+      kode_petugas: "GTX006",
+      nama_panggilan: "BRIPTU Andre",
+      nama_lengkap: "Andre Taulany",
+      lokasi: "Cipularang",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 7,
+      kode_petugas: "GTX007",
+      nama_panggilan: "BRIPKA Nugroho",
+      nama_lengkap: "Agus Nugroho",
+      lokasi: "Cikampek",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 8,
+      kode_petugas: "GTX008",
+      nama_panggilan: "BRIPKA Lukman",
+      nama_lengkap: "Lukman Hakim",
+      lokasi: "BSD",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 9,
+      kode_petugas: "GTX009",
+      nama_panggilan: "BRIPKA Dayat",
+      nama_lengkap: "Dayat Hidayat",
+      lokasi: "Borr",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+    {
+      id: 10,
+      kode_petugas: "GTX010",
+      nama_panggilan: "BRIPKA Ridho",
+      nama_lengkap: "Ridho Rhoma",
+      lokasi: "Borr",
+      no_telp: "81266668888",
+      waktu_terdaftar: "01/01/2023",
+    },
+  ],
+};
+
+// interface
+export interface DataPetugasProps {
+  id: number;
+  kode_petugas?: string;
+  nama_panggilan?: string;
+  nama_lengkap?: string;
+  lokasi?: string;
+  no_telp?: string;
+  waktu_terdaftar?: string;
+}
+
+export interface DataKecelakaanProps {
+  id: number;
+  kode_lantas?: string;
+  petugas?: string;
+  lokasi?: string;
+  ruas_jalan?: string;
+  kilometer?: number;
+  jenis?: string;
+  kategori?: string;
+  waktu_kecelakaan?: string;
+}
