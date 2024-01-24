@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import PiSelect, { type Option as SelectOption } from '@/components/ui/PiSelect.vue';
 import PiTable, { TableColumn } from '@/components/ui/PiTable.vue';
-import useAxios from '@/composables/use-axios';
+// import useAxios from '@/composables/use-axios';
 import { computed, reactive, ref, watch } from 'vue';
-import { dataTables } from "@/data-lakalantas"
+import { dataAnnounces, AnnouncesProps } from "@/data-lakalantas"
 import { addWeeks, endOfMonth, endOfYear, startOfMonth, startOfWeek, startOfYear, subMonths } from 'date-fns';
 import PiIcon from '@/components/ui/PiIcon.vue';
 // search-table
@@ -53,6 +53,13 @@ const categoryOptions: SelectOption[] = [
     },
 ];
 const selectedCategory = ref<any>();
+const selectedSearch = ref<string>("");
+
+const searchCategories = computed(() => {
+    return categoryOptions.filter(c => {
+        return c.label.toLowerCase().includes(selectedSearch.value.toLowerCase())
+    })
+})
 
 // date-range
 const currentDate = new Date();
@@ -86,14 +93,11 @@ const presetDates = ref([
 
 const columns = computed<TableColumn[]>(() => [
     { label: "ID", key: "id", isKey: true },
-    { label: "KOde Lantas", key: "kode_lantas" },
-    { label: "Petugas", key: "petugas" },
+    { label: "Judul", key: "description" },
     { label: "Lokasi", key: "lokasi" },
-    { label: "Ruas Jalan", key: "ruas_jalan" },
-    { label: "KM", key: "kilometer" },
-    { label: "Jenis", key: "jenis" },
-    { label: "Kategori", key: "kategori" },
-    { label: "Waktu Kecelakaan", key: "waktu_kecelakaan" },
+    { label: "Penerbit", key: "penerbit" },
+    { label: "Waktu Terbit", key: "waktu_terbit" },
+    { label: "Aksi", key: "aksi" },
 ]);
 
 interface Meta {
@@ -102,20 +106,8 @@ interface Meta {
     total: number
 }
 
-interface Data {
-    id?: number | string;
-    kode_lantas?: string | number;
-    petugas?: string;
-    lokasi?: string;
-    ruas_jalan?: string;
-    kilometer?: string | number;
-    jenis?: string;
-    kategori?: string | any;
-    waktu_kecelakaan?: string;
-}
-
 interface Response {
-    data: Data[]
+    data: AnnouncesProps[]
     meta: Meta
 }
 
@@ -136,9 +128,10 @@ const fetching = ref(false)
 const fetchData = async (pager = 1) => {
     try {
         fetching.value = true
-        const { data, total, page, limit } = await dataTables
+        const { data, total, page, limit } = await dataAnnounces
         table.data = data;
         table.meta = { page, total, limit }
+        console.log(pager)
     } catch (error) {
         console.log(error)
     } finally {
@@ -181,17 +174,18 @@ const selected = ref([])
         </div>
 
         <div class="w-full">
-            <PiTable selectalbe search-placeholder="Search user" v-model:search="searchInput" @clear-search="onClear"
+            <PiTable selectalbe search-placeholder="Search..." v-model:search="searchInput" @clear-search="onClear"
                 column-key="id" :columns="columns" :rows="table.data" :loading="fetching" :extra-height="200"
                 v-model:selected="selected" v-model:selectAll="selectAll" v-model:pagination="table.meta">
-                
+
                 <template v-slot:header>
                     <div class="w-full flex flex-col lg:flex-row gap-2 lg:justify-end">
                         <div class="w-full lg:w-2/3 flex gap-1 px-2 items-center lg:justify-end">
                             <p class="text-sm w-full max-w-max text-gray-500">Jenis Kecelakaan:</p>
-                            <PiSelect btn-class="w-[14rem] lg:w-[12rem] rounded-full py-2 focus:border focus:border-primary-500 bg-white"
-                                v-model="selectedCategory" :options="categoryOptions" :selected-text="selectedCategory"
-                                placeholder="Pilih Jenis"></PiSelect>
+                            <PiSelect show-search v-model:search="selectedSearch"
+                                btn-class="w-[14rem] lg:w-[12rem] rounded-full py-2 focus:border focus:border-primary-500 bg-white"
+                                v-model="selectedCategory" :options="searchCategories" :selected-text="selectedCategory"
+                                placeholder="Pilih Jenis" />
                         </div>
 
                         <div class="w-full lg:w-1/3">
@@ -211,6 +205,27 @@ const selected = ref([])
                                 </template>
                             </VueDatePicker>
                         </div>
+                    </div>
+                </template>
+
+                <!-- rows -->
+                <template v-slot:description="row">
+                    <div class="w-full">
+                        <p v-if="row.description.length > 50" class="h-auto">{{ row.description.slice(0, 50) + "..." }}</p>
+                        <p v-else>
+                            {{ row.description }}
+                        </p>
+                    </div>
+                </template>
+
+                <template v-slot:aksi="row">
+                    <div class="w-full flex items-center gap-1">
+                        <button class="p-1 text-primary-600" @click="console.log(row.id, 'edit-action')">
+                            <PiIcon type="edit" :size="16" class="text-inherit" />
+                        </button>
+                        <button class="p-1 text-primary-600" @click="console.log(row.id, 'detail-action')">
+                            <PiIcon type="eye" :size="16" class="text-inherit" />
+                        </button>
                     </div>
                 </template>
             </PiTable>

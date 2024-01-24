@@ -16,7 +16,7 @@ const router = createRouter({
     {
       path: '/pengumuman',
       name: 'pengumuman',
-      component: () => import('../views/command-center/PengumumanView.vue')
+      component: () => import('../views/command-center/AnnouncesView.vue')
     },
     {
       path: '/pengaturan-form',
@@ -26,7 +26,7 @@ const router = createRouter({
     {
       path: '/data-petugas',
       name: 'data-petugas',
-      component: () => import('../views/command-center/DataPetugasView.vue')
+      component: () => import('../views/command-center/StaffView.vue')
     },
     {
       path: '/laporan',

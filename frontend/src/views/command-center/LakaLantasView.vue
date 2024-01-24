@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import PiSelect, { type Option as SelectOption } from '@/components/ui/PiSelect.vue';
 import PiTable, { TableColumn } from '@/components/ui/PiTable.vue';
-import useAxios from '@/composables/use-axios';
+// import useAxios from '@/composables/use-axios';
 import { computed, reactive, ref, watch } from 'vue';
 import { dataTables } from "@/data-lakalantas"
 import { addWeeks, endOfMonth, endOfYear, startOfMonth, startOfWeek, startOfYear, subMonths } from 'date-fns';
@@ -53,6 +53,13 @@ const categoryOptions: SelectOption[] = [
   },
 ];
 const selectedCategory = ref<any>();
+const selectedSearch = ref<string>("");
+
+const searchCategories = computed(() => {
+  return categoryOptions.filter(c => {
+    return c.label.toLowerCase().includes(selectedSearch.value.toLowerCase())
+  })
+})
 
 // date-range
 const currentDate = new Date();
@@ -139,6 +146,7 @@ const fetchData = async (pager = 1) => {
     const { data, total, page, limit } = await dataTables
     table.data = data;
     table.meta = { page, total, limit }
+    console.log(pager)
   } catch (error) {
     console.log(error)
   } finally {
@@ -169,21 +177,22 @@ const selected = ref([])
     </div>
 
     <div class="w-full">
-      <PiTable selectalbe search-placeholder="Search user" v-model:search="searchInput" @clear-search="onClear"
+      <PiTable selectalbe search-placeholder="Search..." v-model:search="searchInput" @clear-search="onClear"
         column-key="id" :columns="columns" :rows="table.data" :loading="fetching" :extra-height="200"
         v-model:selected="selected" v-model:selectAll="selectAll" v-model:pagination="table.meta">
 
 
         <template v-slot:header>
           <div class="w-full flex flex-col lg:flex-row gap-2 justify-end">
-            <div class="w-2/3 flex gap-1 px-2 items-center justify-end">
+            <div class="w-full lg:w-2/3 flex gap-1 px-2 items-center lg:justify-end">
               <p class="text-sm w-full max-w-max text-gray-500">Jenis Kecelakaan:</p>
-              <PiSelect btn-class="w-[12rem] rounded-full py-2 focus:border focus:border-primary-500 bg-white"
-                v-model="selectedCategory" :options="categoryOptions" :selected-text="selectedCategory"
-                placeholder="Pilih Jenis"></PiSelect>
+              <PiSelect show-search v-model:search="selectedSearch"
+                btn-class="w-[14rem] lg:w-[12rem] rounded-full py-2 focus:border focus:border-primary-500 bg-white"
+                v-model="selectedCategory" :options="searchCategories" :selected-text="selectedCategory"
+                placeholder="Pilih Jenis" />
             </div>
 
-            <div class="w-1/3">
+            <div class="w-full lg:w-1/3">
               <VueDatePicker v-model="date" range :preset-dates="presetDates">
                 <template #dp-input="{ value }">
                   <input type="text" :value="value"

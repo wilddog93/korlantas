@@ -1020,3 +1020,132 @@ export interface DataKecelakaanProps {
   kategori?: string;
   waktu_kecelakaan?: string;
 }
+
+// pengumuman
+export interface AnnouncesProps {
+  id?: number;
+  kode_petugas?: string;
+  penerbit?: string;
+  nama_lengkap?: string;
+  lokasi?: string;
+  no_telp?: string;
+  waktu_terbit?: string;
+  description?: string;
+}
+export const dataAnnounces = {
+  total: 10,
+  page: 1,
+  limit: 10,
+  data: [
+    {
+      id: 1,
+      kode_petugas: "GTX001",
+      penerbit: "BRIPKA Indra",
+      nama_lengkap: "Indra Muhaimin",
+      lokasi: "Jagorawi",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 2,
+      kode_petugas: "GTX002",
+      penerbit: "BRIPKA Jegel",
+      nama_lengkap: "Indra Jegel",
+      lokasi: "Bitung",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 3,
+      kode_petugas: "GTX003",
+      penerbit: "BRIPTU Surya",
+      nama_lengkap: "Surya Paloh",
+      lokasi: "Serang",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 4,
+      kode_petugas: "GTX004",
+      penerbit: "BRIPTU Andi",
+      nama_lengkap: "Andi Muamar",
+      lokasi: "Borr",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 5,
+      kode_petugas: "GTX005",
+      penerbit: "BRIPTU Dewantara",
+      nama_lengkap: "Agus Dewantara",
+      lokasi: "Serang",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 6,
+      kode_petugas: "GTX006",
+      penerbit: "BRIPTU Andre",
+      nama_lengkap: "Andre Taulany",
+      lokasi: "Cipularang",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 7,
+      kode_petugas: "GTX007",
+      penerbit: "BRIPKA Nugroho",
+      nama_lengkap: "Agus Nugroho",
+      lokasi: "Cikampek",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 8,
+      kode_petugas: "GTX008",
+      penerbit: "BRIPKA Lukman",
+      nama_lengkap: "Lukman Hakim",
+      lokasi: "BSD",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 9,
+      kode_petugas: "GTX009",
+      penerbit: "BRIPKA Dayat",
+      nama_lengkap: "Dayat Hidayat",
+      lokasi: "Borr",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+    {
+      id: 10,
+      kode_petugas: "GTX010",
+      penerbit: "BRIPKA Ridho",
+      nama_lengkap: "Ridho Rhoma",
+      lokasi: "Borr",
+      no_telp: "81266668888",
+      waktu_terbit: "01/01/2023",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+    },
+  ],
+};

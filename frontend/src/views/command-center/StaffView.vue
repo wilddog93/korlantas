@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import PiSelect, { type Option as SelectOption } from '@/components/ui/PiSelect.vue';
 import PiTable, { TableColumn } from '@/components/ui/PiTable.vue';
-import useAxios from '@/composables/use-axios';
+// import useAxios from '@/composables/use-axios';
 import { computed, reactive, ref, watch } from 'vue';
 import { dataPetugas, DataPetugasProps } from "@/data-lakalantas"
 import { formatPhone } from "@/utils"
 import { addWeeks, endOfMonth, endOfYear, startOfMonth, startOfWeek, startOfYear, subMonths } from 'date-fns';
 import PiIcon from '@/components/ui/PiIcon.vue';
 import PiCard from '@/components/ui/PiCard.vue';
-import { watchDebounced } from '@vueuse/core';
+// import { watchDebounced } from '@vueuse/core';
 
 // interface
 
@@ -141,6 +141,7 @@ const fetchData = async (pager = 1) => {
     const { data, total, page, limit } = await dataPetugas
     table.data = data;
     table.meta = { page, total, limit }
+    console.log(pager)
   } catch (error) {
     console.log(error)
   } finally {
@@ -184,7 +185,7 @@ const selected = ref([])
     </div>
 
     <div class="w-full">
-      <PiTable selectalbe search-placeholder="Search user" v-model:search="searchInput" @clear-search="onClear"
+      <PiTable selectalbe search-placeholder="Search..." v-model:search="searchInput" @clear-search="onClear"
         column-key="id" :columns="columns" :rows="table.data" :loading="fetching" :extra-height="200"
         v-model:selected="selected" v-model:selectAll="selectAll" v-model:pagination="table.meta">
 
