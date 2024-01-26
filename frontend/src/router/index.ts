@@ -34,6 +34,11 @@ const router = createRouter({
       component: () => import('../views/command-center/ReportView.vue')
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/auth/LoginView.vue')
+    },
+    {
       path: '/example/icons',
       name: 'example-icons',
       component: () => import('../views/examples/IconView.vue')
