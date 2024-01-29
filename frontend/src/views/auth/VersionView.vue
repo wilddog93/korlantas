@@ -64,7 +64,7 @@ const getPercent = computed(() => {
                 <PiIcon type="download" class="w-4 h-4 text-inherit" />
               </div>
             </PiButton>
-            <PiButton variant="default" base-class="w-full max-w-[16rem] rounded-full px-4 py-3 border">
+            <PiButton :to="{ name: 'login' }" type="button" variant="default" base-class="w-full max-w-[16rem] rounded-full px-4 py-3 border" >
               <div class="flex items-center justify-center space-x-3">
                 <span>Lewati</span>
               </div>

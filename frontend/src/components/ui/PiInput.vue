@@ -16,6 +16,8 @@ export interface Props {
   name?: string
   suffixIcon?: feather.FeatherIconNames
   prefixIcon?: feather.FeatherIconNames
+  suffixIconClass?: string
+  prefixIconClass?: string
   clearable?: boolean
   min?: number
   max?: number
@@ -57,11 +59,12 @@ defineEmits([
 <template>
   <div class="relative flex items-center justify-center">
     <div class="relative flex items-center w-full">
-      <div v-if="prefixIcon || $slots.prepend" class="absolute left-0 ml-2">
+      <div v-if="prefixIcon || $slots.prepend" class="absolute left-1 ml-2">
         <slot v-if="$slots.prepend" name="prepend"></slot>
         <Icon
           v-else-if="prefixIcon"
           class="cursor-pointer"
+          :class="prefixIconClass"
           :type="prefixIcon"
           :size="20"
           @click="$emit('click-prefix-icon')"
@@ -72,6 +75,7 @@ defineEmits([
         <Icon
           v-else-if="suffixIcon"
           class="cursor-pointer"
+          :class="suffixIconClass"
           :type="suffixIcon"
           :size="20"
           @click="$emit('click-suffix-icon')"

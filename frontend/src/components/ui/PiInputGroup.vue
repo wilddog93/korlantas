@@ -3,6 +3,7 @@ import { provide, toRef } from 'vue';
 
 interface Props {
   label?: string
+  labelClass?: string
   labelHint?: string
   hint?: string
   mask?: string | number
@@ -23,7 +24,7 @@ provide('hasError', toRef(props, 'hasError'));
 <template>
   <div class="relative mb-3">
     <div class="mb-1">
-      <label v-if="label" class="'text-gray-500 block text-sm font-medium">
+      <label v-if="label" class="text-gray-500 block text-sm font-medium" :class="labelClass">
         {{ label }} <span v-if="required" class="text-red-500">*</span>
       </label>
       <span v-if="labelHint" class="text-sm text-gray-500">
