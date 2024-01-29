@@ -6,6 +6,32 @@ import Logo1 from '@/assets/images/logo/korlantas-logo-1.png';
 import Logo2 from '@/assets/images/logo/korlantas-logo-2.png';
 import PiButton from '@/components/ui/PiButton.vue';
 import PiProgressBar from '@/components/ui/PiProgressBar.vue';
+import { computed, ref, watch } from 'vue';
+
+const intervalValue = ref<number>(0);
+const total:number = 5000;
+let intervalId: any = null;
+
+const stopInterval = () => {
+  clearInterval(intervalId);
+};
+
+const startInterval = () => {
+  intervalId = setInterval(() => {
+    intervalValue.value += 1;
+
+    if (intervalValue.value === total) {
+      stopInterval();
+    }
+  }, 1);
+};
+
+watch(startInterval,(val) => val)
+
+const getPercent = computed(() => {
+  let value = intervalValue.value;
+  return Number(((value/total) * 100).toFixed(0))
+})
 
 </script>
 
@@ -14,7 +40,7 @@ import PiProgressBar from '@/components/ui/PiProgressBar.vue';
     <div class="w-full h-full flex flex-col lg:flex-row overflow-auto">
       <div class="w-full lg:w-1/2 h-full bg-white p-4">
         <div class="w-full h-full flex flex-col justify-center items-center gap-4">
-          <div class="w-full sm:h-2/3 flex flex-col justify-end items-center gap-4">
+          <div class="w-full flex flex-col items-center gap-4" :class="[getPercent == 100 ? 'sm:h-2/3 justify-end' : 'h-full justify-center']">
             <div class="w-full flex items-center justify-center gap-2">
               <img :src="Logo1" alt="logo-1">
               <img :src="Logo2" alt="logo-2">
@@ -23,23 +49,14 @@ import PiProgressBar from '@/components/ui/PiProgressBar.vue';
             <div class="text-gray-500 text-sm tracking-wide">Memerika versi aplikasi</div>
 
             <div class="w-full px-6 sm:px-20">
-              <!-- <div class="w-full bg-gray-200 rounded-full h-6">
-                <div
-                  class="bg-indigo-600/60 h-full flex justify-center items-center text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-                  style="width: 100%"> 100%</div>
-              </div> -->
-              <PiProgressBar 
-                size="lg" 
-                variant="secondary" 
-                secondary-class="bg-secondary-600/60 text-white" 
-                :value="40"
-              />
+              <PiProgressBar size="lg" variant="secondary" secondary-class="bg-secondary-600/60 text-white"
+                :value="getPercent" />
             </div>
 
-            <div class="text-gray-500 text-sm tracking-wide">Status Pemeriksaan (5000/5000)</div>
+            <div class="text-gray-500 text-sm tracking-wide">Status Pemeriksaan ({{ intervalValue }}/{{ total }})</div>
           </div>
 
-          <div class="w-full sm:h-1/3 flex flex-col items-center gap-4 justify-end">
+          <div v-if="getPercent == 100" class="w-full sm:h-1/3 flex flex-col items-center gap-4 justify-end">
             <p class="text-gray-500 text-sm tracking-wide">Tersedia versi terbaru:</p>
             <PiButton variant="primary" base-class="w-full max-w-[16rem] rounded-full px-4 py-3">
               <div class="flex items-center justify-center space-x-3">
