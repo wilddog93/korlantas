@@ -4,6 +4,16 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/auth/LoginView.vue')
+    },
+    {
+      path: '/checking-version',
+      name: 'checking-version',
+      component: () => import('../views/auth/VersionView.vue')
+    },
+    {
       path: '/',
       name: 'home',
       component: () => import('../views/IndexView.vue')
@@ -32,11 +42,6 @@ const router = createRouter({
       path: '/laporan',
       name: 'laporan',
       component: () => import('../views/command-center/ReportView.vue')
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/auth/LoginView.vue')
     },
     {
       path: '/example/icons',
