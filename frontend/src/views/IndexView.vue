@@ -251,7 +251,7 @@ const selectedArea = ref<any>(areaOptions[0].label);
           <PiCard class="bg-white p-4">
             <h1 class="text-lg text-gray-500 mb-5 font-medium">Data Korban Kecelakaan</h1>
   
-            <div class="grid grid-cols-3 gap-2">
+            <div class="grid grid-cols-3 gap-2 overflow-auto">
               <PiCard class="p-4">
                 <div class="flex gap-1 font-bold text-xs items-center">
                   <div>
