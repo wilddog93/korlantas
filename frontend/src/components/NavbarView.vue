@@ -3,6 +3,7 @@ import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/v
 import PiIcon from '@/components/ui/PiIcon.vue';
 import { ref } from 'vue';
 import PiInput from '@/components/ui/PiInput.vue';
+import PiButton from '@/components/ui/PiButton.vue';
 import Logo1 from '@/assets/images/logo/korlantas-logo-1.png';
 import Logo2 from '@/assets/images/logo/korlantas-logo-2.png';
 import avatar from '@/assets/images/logo-universal.png';
@@ -52,10 +53,13 @@ defineEmits([
         </div>
 
         <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-          <div class="w-full lg:max-w-[20rem] flex flex-shrink-0 justify-center gap-6 items-center">
-            <img class="h-14 w-auto" :src="Logo1" alt="Your Company" />
-            <img class="h-14 w-auto" :src="Logo2" alt="Your Company" />
-          </div>
+          <RouterLink :to="{ name: 'home' }"
+            class="w-full lg:max-w-[20rem] flex flex-shrink-0 justify-center gap-6 items-center" exact-active-class="">
+            <div class="flex gap-1 items-center">
+              <img class="h-14 w-auto" :src="Logo1" alt="Your Company" />
+              <img class="h-14 w-auto" :src="Logo2" alt="Your Company" />
+            </div>
+          </RouterLink>
           <div class="hidden sm:ml-6 sm:flex items-center">
             <div class="flex space-x-4">
               <PiInput v-model="searchInput" prefix-icon="search" clearable @clear="onClear" placeholder="Search..." />
