@@ -5,7 +5,7 @@ import { endOfMonth, endOfYear, startOfMonth, startOfYear, subMonths, startOfWee
 import PiIcon from '@/components/ui/PiIcon.vue';
 import PiCard from '@/components/ui/PiCard.vue';
 import { ChartProps, Doughnut, Bar, Line } from 'vue-chartjs';
-import { doughnutOptions1, barOptions4, lineChart1 } from "@/chart.options"
+import { doughnutOptions1, barOptions4, lineChart1, lineChart2 } from "@/chart.options"
 import { main } from "@/data-lakalantas"
 import PiSelect, { type Option as SelectOption } from '@/components/ui/PiSelect.vue';
 
@@ -242,7 +242,7 @@ const selectedArea = ref<any>(areaOptions[0].label);
               </div>
             </div>
             <div class="w-full h-[325px]">
-              <Line :data="updateChart(selectedArea)" :options="lineChart1" title="Kerugian Materil" />
+              <Line :data="updateChart(selectedArea)" :options="lineChart2" title="Kerugian Materil" />
             </div>
           </div>
         </PiCard>

@@ -242,6 +242,54 @@ export const lineChart1: ChartProps<'line'>['options']  = {
   }
 }
 
+export const lineChart2: ChartProps<'line'>['options']  = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    datalabels: { display: false },
+    legend: {
+      display: false,
+    },
+  },
+  scales: {
+    y: {
+      border: {
+        display: false,
+      },
+      ticks: {
+        // forces step size to be 50 units
+        stepSize: 5
+      },
+      beginAtZero: true,
+      grid: {
+        // You can change the color, the dash effect, the main axe color, etc.
+        color: '#dfeef4', // for the grid lines
+        tickColor: 'transparent', // for the tick mark
+        tickLength: 20, // just to see the dotted line
+        tickWidth: 1,
+        // offset: true,
+        drawTicks: true, // true is default 
+        drawOnChartArea: true // true is default 
+
+      },
+    },
+    x: {
+      beginAtZero: true,
+      ticks: {
+        // forces step size to be 50 units
+        padding: 10
+      },
+      grid: {
+        // offset: true,
+        drawTicks: false, // true is default 
+        drawOnChartArea: false // true is default 
+
+      },
+      border: { dash: [4, 4] }, // for the grid lines
+    },
+  }
+}
+
 export const doughnutOptions1: ChartProps<'doughnut'>['options']  = {
   cutout: 90,
   responsive: true,
