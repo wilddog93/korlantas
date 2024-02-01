@@ -3,7 +3,6 @@ import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/v
 import PiIcon from '@/components/ui/PiIcon.vue';
 import { ref } from 'vue';
 import PiInput from '@/components/ui/PiInput.vue';
-import PiButton from '@/components/ui/PiButton.vue';
 import Logo1 from '@/assets/images/logo/korlantas-logo-1.png';
 import Logo2 from '@/assets/images/logo/korlantas-logo-2.png';
 import avatar from '@/assets/images/logo-universal.png';
