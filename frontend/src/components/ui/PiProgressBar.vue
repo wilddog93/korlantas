@@ -97,7 +97,7 @@ defineOptions({
 <template>
     <div v-if="label" :class="labelClass">{{ label }}</div>
     <div class="relative w-full bg-gray-200 rounded-full" :class="[sizes]">
-        <div :ref="ref" :class="[baseClass, isDisabled ? disableClass : progressClasses]" :disabled="disabled || loading"
+        <div :ref="ref" :class="[baseClass, isDisabled ? disableClass : progressClasses.concat(`${(value && value < 99) ? 'rounded-r-none' : ' '}`)]" :disabled="disabled || loading"
             :style="{ width: `${value}%` }">
             <div 
                 class="absolute z-10 flex items-center justify-center inset-0 w-full"
