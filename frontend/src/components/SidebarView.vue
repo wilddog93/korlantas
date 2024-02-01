@@ -29,7 +29,7 @@ const menus: Menu[] = [
   { to: 'rekap-lakalantas', label: 'Rekap Lakalantas', icon: "list" },
   { to: 'pengumuman', label: 'Pengumuman', icon: "info" },
   { to: 'pengaturan-form', label: 'Pengaturan Form', icon: "clipboard" },
-  { to: 'laporan', label: 'Laporan', icon: "book" },
+  { to: 'laporan', label: 'Cetak Laporan', icon: "book" },
   { to: 'data-petugas', label: 'Data Petugas', icon: "folder" },
 ];
 
@@ -81,12 +81,12 @@ const lessMore = () => {
         <h1 class="text-gray-500 text-md mb-3">Pengumuman Terbaru</h1>
         <ul class="">
           <li v-for="(announce, index) in diplayAnnounces" :key="index" class="border-b border-gray-300 p-2"
-            :class="[announces.length - 1 == index ? '' : 'mb-3']">
+            :class="[diplayAnnounces.length - 1 == index ? '' : 'mb-3']">
             <p class="font-semibold">{{ announce.description }}</p>
             <p v-if="announce.datetime">{{ format(new Date(announce.datetime), "dd MMM yyyy hh:mm") }}</p>
           </li>
-          <button @click="loadMore" v-if="showLoadMore">Tampilkan..</button>
-          <button @click="lessMore" v-else>Sembunyikan..</button>
+          <button @click="loadMore" v-if="showLoadMore" class="w-full text-primary-600 font-semibold mt-3">Tampilkan..</button>
+          <button @click="lessMore" v-else class="w-full text-primary-600 font-semibold mt-3">Sembunyikan..</button>
         </ul>
       </PiCard>
     </div>

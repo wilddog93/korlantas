@@ -1,3 +1,5 @@
+import { Option } from "./components/ui/PiSelect.vue";
+
 export const main = [
   {
     name: "Bitung",
@@ -750,6 +752,37 @@ export const main = [
     ],
   },
 ];
+
+export const dataInduk: Option[] = [
+  {
+    label: "Bitung",
+    value: "bitung"
+  },
+  {
+    label: "BSD",
+    value: "BSD"
+  },
+  {
+    label: "Borr",
+    value: "Borr"
+  },
+  {
+    label: "Cikampek",
+    value: "Cikampek"
+  },
+  {
+    label: "Cipularang",
+    value: "Cipularang"
+  },
+  {
+    label: "Jagorawi",
+    value: "Jagorawi"
+  },
+  {
+    label: "Serang",
+    value: "Serang"
+  }
+]
 
 export const announces = [
   {
