@@ -57,7 +57,7 @@ const searchInduk = computed(() => {
         </PiCard>
 
         <PiCard class="bg-white rounded-xl shadow-sm p-4">
-          <h1 class="font-bold text-xl sm:text-2xl mb-3">2, Data Pengegemudi & Korban</h1>
+          <h1 class="font-bold text-xl sm:text-2xl mb-3">B, Data Pengegemudi & Korban</h1>
 
           <FormComponent class="mb-3" title="1. Usia" :items="dataLaka" />
           <FormComponent class="mb-3" title="2. Pekerjaan" :items="dataLaka" />
